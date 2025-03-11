@@ -1,8 +1,13 @@
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
 #include <arpa/inet.h>
 #include <sys/socket.h>
+
+void* handle_client(int connectfd);
+
 int main(int argc, char** argv) {
     int port = 5551;
     if (argc > 2) {
@@ -16,7 +21,22 @@ int main(int argc, char** argv) {
     bind(sockfd,((struct sockaddr*)&address) ,sizeof(address));
     listen(sockfd,5);
     int clientfd = accept(sockfd,0,0);
-    char buf[64];
-    recv(clientfd,buf,63,0);
-    printf("%s\n",buf);
+    handle_client(clientfd);
+}
+
+
+void* handle_client(int connectfd) {
+    char buf[256];
+    do {
+        bzero(buf,256);
+        int bytes = recv(connectfd,buf,255,0);
+        if (strlen(buf) == 0) {
+            printf("Shuting down!\n");
+        } else {
+            printf("%s %ld\n",buf,strlen(buf));    
+        }
+        
+        
+    } while (strlen(buf) != 0);
+    return NULL;
 }
