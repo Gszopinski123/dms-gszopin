@@ -10,6 +10,7 @@ char* convertAddress(char ip[], char* newIp);
 int main(int argc, char** argv) {
     char ip[128] = "dms-gszopin-0.dms-gszopin-svc.default.svc.cluster.local";
     char* newIp = (char*)malloc(128);
+    printf("%s\n",newIp);
     convertAddress(ip,newIp);
     //inet_aton(newIp, (struct in_addr*)&address.sin_addr.s_addr);
     // struct sockaddr_in address;
