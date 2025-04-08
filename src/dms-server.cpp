@@ -17,8 +17,7 @@ int setNext(int id, int Nnodes, char**argv) {
     } else if (atoi(argv[id])+1 == atoi(argv[Nnodes]) && atoi(argv[id]) == 0) {
         set = 0;
     } else if (atoi(argv[id])+1 == atoi(argv[Nnodes])) {
-        printf("HERE DEBUG2\n");
-        set = -1;
+        set = -atoi(argv[id);
     } 
     return set;
 }
@@ -46,7 +45,7 @@ int main(int argc, char** argv) {
         if (ip[i] == '<') {
             for (; j != stringlen && j+i != 128; j++){
                 if (j == stringlen-1) {
-                    ip[i+j] = (char)(((int)argv[id][j]) + set);
+                    ip[i+j] = (char)((int)argv[id]) + set);
                 } else {
                     ip[i+j] = argv[id][j];
                 }
