@@ -10,7 +10,6 @@ char* convertAddress(char ip[], char* newIp);
 int main(int argc, char** argv) {
     char ip[128] = "dms-gszopin-0.dms-gszopin-svc.default.svc.cluster.local";
     char* newIp = (char*)malloc(128);
-    printf("%s\n",newIp);
     convertAddress(ip,newIp);
     //inet_aton(newIp, (struct in_addr*)&address.sin_addr.s_addr);
     // struct sockaddr_in address;
@@ -29,7 +28,7 @@ char* convertAddress(char ip[],char* newIp) {
     struct addrinfo hints, *res, *p;
     void* addr;
     char ipv4[128];
-    char buf[128] = "Howdy!\n";
+    char buf[128] = "Howdy!";
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
@@ -40,8 +39,17 @@ char* convertAddress(char ip[],char* newIp) {
         addr = &(address->sin_addr);
         inet_ntop(res->ai_family, addr, ipv4, sizeof(ipv4));
         int sockfd = socket(res->ai_family, res->ai_socktype,0);
+        if (sockfd < 0) {
+            printf("Socket Failure!\n");
+        }
         int connectfd = connect(sockfd, res->ai_addr, res->ai_addrlen);
+        if (connectfd < 0) {
+            printf("Connection Failure!\n");
+        }
         send(sockfd,buf,127,0);
+        printf("%s\n",buf);
+        recv(sockfd,buf,127,0);
+        printf("%s\n",buf);
         res = res->ai_next;
     }
     freeaddrinfo(p);
