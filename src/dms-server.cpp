@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
         if (ip[i] == '<') {
             for (; j != stringlen && j+i != 128; j++){
                 if (j == stringlen-1) {
-                    ip[i+j] = (char)((int)argv[id][j]) + set);
+                    ip[i+j] = (char)(((int)argv[id][j]) + set);
                 } else {
                     ip[i+j] = argv[id][j];
                 }
