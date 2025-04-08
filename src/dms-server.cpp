@@ -110,6 +110,7 @@ int main(int argc, char** argv) {
             printf("%s\n",buf);
             send(saveOriClient,buf,255,0);
         }
+        close(sockfd);
         return 0;
     }
     return 0;
@@ -132,6 +133,7 @@ char* convertAddress(char ip[],char* newIp,char buf[]) {
         int sockfd = socket(res->ai_family, res->ai_socktype,0);
         int connectfd = connect(sockfd, res->ai_addr, res->ai_addrlen);
         send(sockfd,buf,255,0);
+        close(sockfd);
         res = res->ai_next;
     }
     freeaddrinfo(p);
