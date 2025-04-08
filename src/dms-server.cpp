@@ -39,7 +39,6 @@ int main(int argc, char** argv) {
             j++;
         }
     }
-    printf("%s\n",message);
     int set = setNext(id, Nnodes, argv);
     int stringlen = strlen(argv[id]);
     for (int i = 0, j = 0; j+i != 128; i++) {
@@ -108,7 +107,7 @@ int main(int argc, char** argv) {
         }
         printf("%s\n",buf);
         if (id == 0) {
-            printf("%s\n",buf);
+            printf("Back at the start!\n");
             send(saveOriClient,buf,255,0);
         }
         close(sockfd);
