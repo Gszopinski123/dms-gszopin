@@ -11,16 +11,6 @@ int main(int argc, char** argv) {
     char ip[128] = "dms-gszopin-0.dms-gszopin-svc.default.svc.cluster.local";
     char* newIp = (char*)malloc(128);
     convertAddress(ip,newIp);
-    //inet_aton(newIp, (struct in_addr*)&address.sin_addr.s_addr);
-    // struct sockaddr_in address;
-    // ipbasic == -1 ? inet_aton(ip, (struct in_addr*)&address.sin_addr.s_addr)  : address.sin_addr.s_addr = ipbasic;
-    // // address.sin_addr.s_addr = INADDR_ANY;
-    // address.sin_port = htons(port);
-    // address.sin_family = AF_INET;
-    // int socketfd = socket(AF_INET,SOCK_STREAM,0);
-    // int connectfd = connect(socketfd,(struct sockaddr*)&address, sizeof(address));
-    // char buf[256] = "Hello there!";
-    // send(socketfd, buf, 255, 0);
     return 0;
 }
 
