@@ -17,6 +17,7 @@ int setNext(int id, int Nnodes, char**argv) {
     } else if (atoi(argv[id])+1 == atoi(argv[Nnodes]) && atoi(argv[id]) == 0) {
         set = 0;
     } else if (atoi(argv[id])+1 == atoi(argv[Nnodes])) {
+        printf("HERE DEBUG2\n");
         set = -1;
     } 
     return set;
