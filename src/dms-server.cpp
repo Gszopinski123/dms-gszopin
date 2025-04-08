@@ -82,7 +82,7 @@ int main(int argc, char** argv) {
             }
             saveOriClient = clientfd;
             recv(clientfd,buf,255,0);
-            printf("%s\n",buf);
+            printf("Starting with from the client: %s\n",buf);
             for (int i = 0, j = 0; i+j != strlen(buf)+strlen(message); i++) {
                 if (i+j >= strlen(buf)) {
                     buf[i] = message[j];
