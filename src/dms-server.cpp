@@ -103,6 +103,7 @@ int main(int argc, char** argv) {
                     j++;
                 }
             }
+            printf("DEBUG 1! %s\n",ip);
             convertAddress(ip,newIp,buf);
         }
         printf("%s\n",buf);
