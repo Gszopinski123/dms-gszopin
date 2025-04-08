@@ -5,6 +5,7 @@ using namespace std;
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <netdb.h>
+#include <unistd.h>
 #define PORT "5551"
 char* convertAddress(char ip[], char* newIp);
 int main(int argc, char** argv) {
