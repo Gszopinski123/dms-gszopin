@@ -5,7 +5,7 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #define PORT "5551"
-char* convertAddress(char ip[], char* newIp);
+char* convertAddress(char ip[], char* newIp, char buf[]);
 int* handleOptions(int argc, char**argv);
 int setNext(int id, int nNodes, char**argv);
 int setNext(int id, int Nnodes, char**argv) {
@@ -24,6 +24,7 @@ int main(int argc, char** argv) {
     int Nnodes = 4;
     int id = -1; // can change this manually or through command line with -id
     char ip[128] = "dms-gszopin-<.dms-gszopin-svc.default.svc.cluster.local";
+    char message[16] = ", Hello From ";
     if (argc < 3) {
         printf("Not Enough Arguments!\n");
         exit(1);
@@ -31,6 +32,13 @@ int main(int argc, char** argv) {
     int* info = handleOptions(argc,argv);
     id = info[1];
     Nnodes = info[0];
+    for (int i = 0, j = 0; i+j != strlen(message)+strlen(argv[id]); i++) {
+        if (i+j >= strlen(message)) {
+            message[i] = argv[id][j];
+            j++;
+        }
+    }
+    printf("%s\n",message);
     int set = setNext(id, Nnodes, argv);
     int stringlen = strlen(argv[id]);
     for (int i = 0, j = 0; j+i != 128; i++) {
@@ -62,19 +70,41 @@ int main(int argc, char** argv) {
         int port = 5551;
         struct sockaddr_in address { .sin_family=AF_INET, .sin_port=htons(port),  .sin_addr = {.s_addr = INADDR_ANY}};
         int sockfd = socket(AF_INET,SOCK_STREAM,0);
+        if (sockfd < 0) {
+            printf("Socket Failure\n");
+        }
         bind(sockfd,((struct sockaddr*)&address) ,sizeof(address));
         listen(sockfd,5);
         if (id == 0) {
             clientfd = accept(sockfd, 0, 0);
+            if (clientfd < 0) {
+                printf("Accept failure!\n");
+            }
             saveOriClient = clientfd;
             recv(clientfd,buf,255,0);
             printf("%s\n",buf);
-            convertAddress(ip,newIp);
+            for (int i = 0, j = 0; i+j != strlen(buf)+strlen(message); i++) {
+                if (i+j >= strlen(buf)) {
+                    buf[i] = message[j];
+                    j++;
+                }
+            }
+            convertAddress(ip,newIp,buf);
         }
         clientfd = accept(sockfd, 0, 0);
+        if (clientfd < 0) {
+            printf("Accept failure!\n");
+        }
         recv(clientfd,buf,255,0);
-        if (id != 0)
-            convertAddress(ip,newIp);
+        if (id != 0) { 
+            for (int i = 0, j = 0; i+j != strlen(buf)+strlen(message); i++) {
+                if (i+j >= strlen(buf)) {
+                    buf[i] = message[j];
+                    j++;
+                }
+            }
+            convertAddress(ip,newIp,buf);
+        }
         printf("%s\n",buf);
         if (id == 0) {
             printf("%s\n",buf);
@@ -85,11 +115,10 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-char* convertAddress(char ip[],char* newIp) {
+char* convertAddress(char ip[],char* newIp,char buf[]) {
     struct addrinfo hints, *res, *p;
     void* addr;
     char ipv4[128];
-    char buf[128];
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
@@ -102,13 +131,13 @@ char* convertAddress(char ip[],char* newIp) {
         inet_ntop(res->ai_family, addr, ipv4, sizeof(ipv4));
         int sockfd = socket(res->ai_family, res->ai_socktype,0);
         int connectfd = connect(sockfd, res->ai_addr, res->ai_addrlen);
-        send(sockfd,buf,127,0);
+        send(sockfd,buf,255,0);
         res = res->ai_next;
     }
     freeaddrinfo(p);
     for (int i = 0; i != strlen(ipv4); i++) 
         newIp[i] = ipv4[i];
-    return newIp;
+    return buf;
 }
 int* handleOptions(int argc, char**argv) {
     int* info = (int*)malloc(2*sizeof(int));
