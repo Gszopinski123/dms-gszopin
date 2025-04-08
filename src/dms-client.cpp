@@ -28,6 +28,7 @@ char* convertAddress(char ip[],char* newIp) {
         struct sockaddr_in *address = (struct sockaddr_in*)res->ai_addr;
         addr = &(address->sin_addr);
         inet_ntop(res->ai_family, addr, ipv4, sizeof(ipv4));
+        printf("%s\n",ipv4);
         int sockfd = socket(res->ai_family, res->ai_socktype,0);
         if (sockfd < 0) {
             printf("Socket Failure!\n");
