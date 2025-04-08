@@ -69,10 +69,12 @@ int main(int argc, char** argv) {
             saveOriClient = clientfd;
             recv(clientfd,buf,255,0);
             printf("%s\n",buf);
+            convertAddress(ip,newIp);
         }
-        convertAddress(ip,newIp);
         clientfd = accept(sockfd, 0, 0);
         recv(clientfd,buf,255,0);
+        if (id != 0)
+            convertAddress(ip,newIp);
         printf("%s\n",buf);
         if (id == 0) {
             printf("%s\n",buf);
