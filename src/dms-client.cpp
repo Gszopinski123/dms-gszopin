@@ -42,6 +42,7 @@ char* convertAddress(char ip[],char* newIp) {
         recv(sockfd,buf,127,0);
         printf("%s\n",buf);
         res = res->ai_next;
+        close(sockfd);
     }
     freeaddrinfo(p);
     for (int i = 0; i != strlen(ipv4); i++) 
