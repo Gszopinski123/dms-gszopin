@@ -4,6 +4,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <unistd.h>
 #define PORT "5551"
 char* convertAddress(char ip[], char* newIp, char buf[]);
 int* handleOptions(int argc, char**argv);
